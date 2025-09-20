@@ -3,7 +3,8 @@
 // * 	Author		:	Armand Moussaouyi
 // *	Date		:	Thursday 17th July, 2025
 // *	Version		:	v1.0.0
-// * 	Description	:   This program searches for and returns a list of coupons and or promotional codes based on user-provided store names
+// * 	Description	:   This is the Entity (model/class/object) representing the api_prompt table in the database. Part of the Prompt data layer using Java Persistence API,
+// *                        with a MySQL database in this case.
 // *==========================================================================================================================================================================
 // *
 // *	Dependencies:	MySQL

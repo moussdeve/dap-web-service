@@ -3,7 +3,7 @@
 // * 	Author		:	Armand Moussaouyi
 // *	Date		:	Thursday 17th July, 2025
 // *	Version		:	v1.0.0
-// * 	Description	:	
+// * 	Description	:	Performs client requests to DeepSeek
 // *==========================================================================================================================================================================
 // *
 // *	Dependencies:	NONE
@@ -44,7 +44,7 @@ public class DeepSeekRequestService implements RequestService {
 
     @Override
     public Mono<DeepSeekResponseModel> chatCompletion(String message) {
-        Prompt prompt = apiPromptService.findByTitle(Constants.DEEPSEEK).get();
+        Prompt prompt = apiPromptService.findByTitle(Constants.DEEPSEEK_TITLE).get();
         DeepSeekRequestModel request = createRequest(prompt.getPromptText() + ": " + message);
         ApiConfig config = apiConfigService.findAll().get(0);
 
