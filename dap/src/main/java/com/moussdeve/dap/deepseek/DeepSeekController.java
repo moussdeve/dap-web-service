@@ -1,0 +1,113 @@
+//*****************************************************************************************************************************************************************************
+// *	Title		:	DeepSeekController
+// * 	Author		:	Armand Moussaouyi
+// *	Date		:	Thursday 17th July, 2025
+// *	Version		:	v1.0.0
+// *
+// * 	Description	:	This class implements the RestController exposing DeepSeek data handling HTTP requests and responses in this RESTful web service (API).
+// *                        - Receives HTTP requests (GET, POST, PUT, and DELETE)
+// *                        - Process the requests (calls the DeepSeek service and computes besiness logic)
+// *                        - Returns a response  in JSON format.
+// *
+// *                    Features:
+// *                        Routing - Maps HTTP methods and URLs to specific function
+// *                        CRUD Operations - Supports the Create, Read, Update, and Delete operations
+// *                        Statelessness - Each request is independent; does not store any session state
+// *                        DeepSeek-Resource-Oriented - Operates on DeepSeek resources
+// *==========================================================================================================================================================================
+// *
+// *	Dependencies:	NONE
+// *	Usage		:	
+// *	Notes		:	
+//*****************************************************************************************************************************************************************************
+
+package com.moussdeve.dap.deepseek;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.moussdeve.dap.globalprocess.ContentLineEntity;
+
+import reactor.core.publisher.Mono;
+
+@RestController
+@RequestMapping("/dap/api/v1.0/des/")
+public class DeepSeekController {
+
+    private final DeepSeekRequestService deepSeekRequestService;
+
+    public DeepSeekController(DeepSeekRequestService deepSeekService) {
+        this.deepSeekRequestService = deepSeekService;
+    }
+    
+
+    /*********************************************************************************************************************************************************
+     * GET - Operation:
+     *  Takes a store name as request parameter and return a JSON list of coupons and promotional codes
+     *  Usage:  http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/promoco?store={STORE_NAME}
+     *          e.g. http://localhost:8080/dap/api/v1.0/des/promoco?store=Walmart
+     *  
+     * @return List<ContentLineEntity> codes - a list of codes 
+     ********************************************************************************************************************************************************/
+    @GetMapping("promoco")
+    public List<ContentLineEntity> getCoupons(@RequestParam String store) {
+        
+        Mono<DeepSeekResponseModel> responseMono = deepSeekRequestService.chatCompletion(store);
+        DeepSeekResponseModel response = responseMono.block();
+        
+        DeepSeekResponseParser parser = new DeepSeekResponseParser(response);
+        List<ContentLineEntity> codes = parser.getContent();
+        return codes;
+    }
+
+
+    /*********************************************************************************************************************************************************
+     * POST - Operation:
+     *  Takes name as request parameter and returns a DeepSeekResponseModel JSON of coupons and promotional codes
+     *  Usage:  http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/?store={STORE_NAME}
+     *          e.g. http://localhost:8080/dap/api/v1.0/des/?store=Walmart
+     *  
+     * @return Mono<ResponseEntity<DeepSeekResponseModel>> 
+     ********************************************************************************************************************************************************/
+    @PostMapping("/")
+    private Mono<ResponseEntity<DeepSeekResponseModel>> searchDeepSeek(@RequestParam String store) {
+        // final String prompt = messageDeepSeek + store;
+        return deepSeekRequestService.chatCompletion(store)
+                .map(ResponseEntity::ok)
+                .onErrorResume(e -> Mono.just(ResponseEntity.internalServerError().build()));
+    }
+
+
+    /*********************************************************************************************************************************************************
+     * POST - Operation:
+     *  Takes a store DeepSeekRequestModel JSON as request body and returns a DeepSeekResponseModel JSON of coupons and promotional codes
+     *  Usage:  http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/custom?store={STORE_NAME}
+     *          e.g. http://localhost:8080/dap/api/v1.0/des/?store=Walmart
+     *  
+     * @return Mono<ResponseEntity<DeepSeekResponseModel>> 
+     ********************************************************************************************************************************************************/
+    @PostMapping("custom")
+    private Mono<ResponseEntity<DeepSeekResponseModel>> getCustomCompletion(@RequestBody DeepSeekRequestModel store) {
+        return deepSeekRequestService.chatCompletion(store.getMessages().get(0).getContent())
+                .map(ResponseEntity::ok)
+                .onErrorResume(e -> Mono.just(ResponseEntity.internalServerError().build()));
+    }
+
+
+    /*********************************************************************************************************************************************************
+     * heallthCheck:
+     *  Return an Ok 200 response when the api is running. This is a status check method
+     *  Usage: http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/status e.g. http://localhost:8080/dap/api/v1.0/des/status
+     ********************************************************************************************************************************************************/
+    @GetMapping("status")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("DeepSeek Chat API Service is running");
+    }
+}

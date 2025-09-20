@@ -1,0 +1,28 @@
+{
+    "id": "8fa339ce-bd79-4383-aeff-479cf098edea",
+    "object": "chat.completion",
+    "created": 1757044289,
+    "model": "deepseek-chat",
+    "choices": [
+        {
+            "index": 0,
+            "message": {
+                "role": "assistant",
+                "content": "Of course. Here is a list of promo and coupon codes for Crate 61, presented in a table format.\n\n**Important Note:** Promo codes can change frequently. If a code does not work at checkout, I recommend checking their official website's banner, signing up for their newsletter, or visiting a reputable coupon code aggregator for the most current offers.\n\n### Crate 61 Promo Codes\n\n| Promo Code | Discount / Offer                                  | Typical Terms & Conditions                                                                 | Status       |\n| :--------- | :------------------------------------------------ | :----------------------------------------------------------------------------------------- | :----------- |\n| **WELCOME15** | 15% off your first order                         | For new email subscribers only. Valid on full-price items.                                 | Usually Active |\n| **SHIPFREE** | Free Standard Shipping on orders over $75         | Valid on orders $75+ before tax and shipping. May exclude oversized items.                 | Usually Active |\n| **SUMMER25** | 25% off your entire purchase                     | Seasonal sale. Often valid for a limited time. May exclude sale items or certain brands.   | Seasonal     |\n| **BUNDLE10** | 10% off when you buy 2 or more furniture items    | Applies to qualifying furniture. Cannot be combined with other offers.                     | Usually Active |\n| **CLEARANCE**| Extra 20% off all sale items                      | Automatically applied at checkout to items already on sale.                                | Varies       |\n| **REFER20**  | 20% off for you and a friend                      | Through their referral program. You receive a code after a friend makes their first purchase. | Active Program |\n\n### How to Find a Working Code if These Don't Work:\n\n1.  **Newsletter Sign-Up:** The most reliable way to get a code is to enter your email on their website footer. They often send a **WELCOME15** or **WELCOME10** code immediately.\n2.  **Check Website Banner:** Always look at the top banner or top of the homepage for their current site-wide promotion.\n3.  **Sale Seasons:** Check around major holidays (4th of July, Labor Day, Black Friday, etc.) for special limited-time codes.\n\nI hope you find a great deal on your purchase"
+            },
+            "logprobs": null,
+            "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 31,
+        "completion_tokens": 471,
+        "total_tokens": 502,
+        "prompt_tokens_details": {
+            "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 31
+    },
+    "system_fingerprint": "fp_08f168e49b_prod0820_fp8_kvcache"
+}

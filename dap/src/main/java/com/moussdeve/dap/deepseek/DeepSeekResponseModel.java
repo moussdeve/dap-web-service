@@ -1,0 +1,238 @@
+//*****************************************************************************************************************************************************************************
+// *	Title		:	DeepSeekResponseModel
+// * 	Author		:	Armand Moussaouyi
+// *	Date		:	Thursday 17th July, 2025
+// *	Version		:	v1.0.0
+// * 	Description	:	
+// *==========================================================================================================================================================================
+// *
+// *	Dependencies:	NONE
+// *	Usage		:	
+// *	Notes		:	
+//*****************************************************************************************************************************************************************************
+
+package com.moussdeve.dap.deepseek;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class DeepSeekResponseModel {
+
+    private String id;                      // Unique identifier (id) for this particular API response
+    private String object;                  // The type of object returned. In this case "chat.completion", signifying a chat completion response
+    private long created;                   // A Unix timestamp (in seconds) when the response was generated (e.g. 1756864641 -> corresponding to a specific date/time)
+    private String model;                   // The name of the model used to generate the completion (e.g. "deepseek-chat")
+    private List<Choice> choices;           // A list of possible responses the model generated. Usually there's just one (index = 0), but multiple completions can be resquested
+    private Usage usage;                    // Contains token usage statistics (how many tokens were consumed by the request and response). Useful for monitoring costs and performance
+
+    @JsonProperty("system_fingerprint")
+    private String systemFingerprint;       // An id of the model/system configuration that generated this response. It helps trace issues or ensure reproducibility
+
+    // Getters and Setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getObject() {
+        return object;
+    }
+
+    public void setObject(String object) {
+        this.object = object;
+    }
+
+    public long getCreated() {
+        return created;
+    }
+
+    public void setCreated(long created) {
+        this.created = created;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public List<Choice> getChoices() {
+        return choices;
+    }
+
+    public void setChoices(List<Choice> choices) {
+        this.choices = choices;
+    }
+
+    public Usage getUsage() {
+        return usage;
+    }
+
+    public void setUsage(Usage usage) {
+        this.usage = usage;
+    }
+
+    public String getSystemFingerprint() {
+        return systemFingerprint;
+    }
+
+    public void setSystemFingerprint(String systemFingerprint) {
+        this.systemFingerprint = systemFingerprint;
+    }
+
+    public static class Choice {
+        private int index;                  // The position of this response in the list (starting at 0). If you asked for multiple completions, helping differentiate them.
+        private Message message;            // The actual response message. Containing "role" and "content"
+        private Object logprobs;            // If enabled, this would include log probabilities of tokens (for debugging/analysis). Can be null
+
+        // Why the model stopped generating text.
+        //  Common values:
+        //      "stop"              - finished naturally (such as reaching end of answer or encountering a stop sequence)
+        //      "length"            - stopped because max token limit reached 
+        //      "content_filter"    - response blocked by safety filters
+        @JsonProperty("finish_reason")
+        private String finishReason;         
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
+        public Message getMessage() {
+            return message;
+        }
+
+        public void setMessage(Message message) {
+            this.message = message;
+        }
+
+        public Object getLogprobs() {
+            return logprobs;
+        }
+
+        public void setLogprobs(Object logprobs) {
+            this.logprobs = logprobs;
+        }
+
+        public String getFinishReason() {
+            return finishReason;
+        }
+
+        public void setFinishReason(String finishReason) {
+            this.finishReason = finishReason;
+        }
+    }
+
+    public static class Message {
+        private String role;            // Who produced the message (such as "user" - your input, "assistant" - AI's reply, or "system" - System-level instruction)
+        private String content;         // The text generated by the AI (the assistant's response)
+
+        public String getRole() {
+            return role;
+        }
+        public void setRole(String role) {
+            this.role = role;
+        }
+
+        public String getContent() {
+            return content;
+        }
+        public void setContent(String content) {
+            this.content = content;
+        }
+    }
+
+    public static class Usage {
+        @JsonProperty("prompt_tokens")
+        private int promptTokens;           // Number of tokens in your the input (the user/system messages)
+
+        @JsonProperty("completion_tokens") 
+        private int completionTokens;       // Number of tokens generated in the AI's response
+
+        @JsonProperty("total_tokens")
+        private int totalTokens;            // Sum of prompt + completion tokens
+
+        // Breaks down the input tokens in more detail:
+        //  cached_tokens: How many tokens were reused from cache (if using token caching)
+        @JsonProperty("prompt_tokens_details")
+        private PromptTokensDetails promptTokensDetails;    
+
+        @JsonProperty("prompt_cache_hit_tokens")
+        private int promptCacheHitTokens;           // Tokens that were retrieved from cache instead of recomputed
+
+        @JsonProperty("prompt_cache_miss_tokens")
+        private int promptCacheMissTokens;          // Tokens that were newly processed (not cached)
+
+        public int getPromptTokens() {
+            return promptTokens;
+        }
+
+        public void setPromptTokens(int promptTokens) {
+            this.promptTokens = promptTokens;
+        }
+
+        public int getCompletionTokens() {
+            return completionTokens;
+        }
+
+        public void setCompletionTokens(int completionTokens) {
+            this.completionTokens = completionTokens;
+        }
+
+        public int getTotalTokens() {
+            return totalTokens;
+        }
+
+        public void setTotalTokens(int totalTokens) {
+            this.totalTokens = totalTokens;
+        }
+
+        public PromptTokensDetails getPromptTokensDetails() {
+            return promptTokensDetails;
+        }
+
+        public void setPromptTokensDetails(PromptTokensDetails promptTokensDetails) {
+            this.promptTokensDetails = promptTokensDetails;
+        }
+
+        public int getPromptCacheHitTokens() {
+            return promptCacheHitTokens;
+        }
+
+        public void setPromptCacheHitTokens(int promptCacheHitTokens) {
+            this.promptCacheHitTokens = promptCacheHitTokens;
+        }
+
+        public int getPromptCacheMissTokens() {
+            return promptCacheMissTokens;
+        }
+
+        public void setPromptCacheMissTokens(int promptCacheMissTokens) {
+            this.promptCacheMissTokens = promptCacheMissTokens;
+        }
+
+    }
+
+    public static class PromptTokensDetails {
+        @JsonProperty("cached_tokens")
+        private int cachedTokens;           // How many tokens were reused from cache (if using token caching)
+
+        // Getters and Setters
+        public int getCachedTokens() {
+            return cachedTokens;
+        }
+
+        public void setCachedTokens(int cachedTokens) {
+            this.cachedTokens = cachedTokens;
+        }
+    }
+}

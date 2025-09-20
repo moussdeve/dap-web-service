@@ -1,0 +1,28 @@
+{
+    "id": "88e75c57-2041-4866-8823-84cefb27c1e8",
+    "object": "chat.completion",
+    "created": 1757044189,
+    "model": "deepseek-chat",
+    "choices": [
+        {
+            "index": 0,
+            "message": {
+                "role": "assistant",
+                "content": "Of course. Here is a list of current and commonly available promo codes for Grove Collaborative (Grove Co.), presented in a table format.\n\n**Important Note:** Promo codes can change frequently and are often targeted to specific users or regions. I recommend trying a few from this list at checkout to see which one provides the best discount for your particular cart.\n\n### Grove Co. Promo Codes & Offers\n\n| Promo Code | Discount Offer | Best For / Notes |\n| :--- | :--- | :--- |\n| **HELLOGROVE** | **Free VIP Shipping + 5-piece gift** | **New Customers.** This is their most common and valuable starter offer. |\n| **WELCOME** | Varies (often 20% off + free gift) | New Customers. A reliable alternative to the code above. |\n| **GROVE20** | 20% off your order | New or existing customers. A general-purpose discount code. |\n| **SHIPFREE** | Free shipping on orders over $49 | All customers. Standard free shipping threshold. |\n| **CLEAN15** | 15% off your order | A good fallback if other codes aren't working. |\n| **REFER** | Friend gives you $10, you get $10 | Referring a friend (not a traditional checkout code). |\n| (None needed) | **Build a Bundle** for 20-30% off | **All customers.** This is a site-wide promotion on bundled items, often the best deal. |\n\n---\n\n### How to Get the Best Deal at Grove Co.:\n\n1.  **New Customers:** Always use **HELLOGROVE** or **WELCOME** for your first order. This typically includes a free gift set (like a glass spray bottle, soap dispenser, and cleaning concentrates) and free shipping, which is a fantastic value.\n2.  **Build a Bundle:** Look for the \"Build a Bundle\" option on the site. This is not a code but a promotion where you can select several full-size products (e.g., hand soap, dish soap, household cleaner) for a significant discount, often better than a standard percentage-off code.\n3.  **Free Shipping:** If you don't have a code, remember that orders over $49 typically ship for free. You can use code **SHIPFREE** to ensure this is applied.\n4.  **Check their Sale Page:** Grove Co. has a permanent \"Sale\" section on their website with already-discounted items. You can often apply a promo code on top of these sale prices.\n\n**Pro Tip:** The most reliable way to find a working code is to sign up for their newsletter with your email address. They will usually send you a welcome offer immediately. You can also try opening the site in an incognito/private browser window to be recognized as a new visitor, which often triggers a pop-up with a special offer."
+            },
+            "logprobs": null,
+            "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 29,
+        "completion_tokens": 604,
+        "total_tokens": 633,
+        "prompt_tokens_details": {
+            "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 29
+    },
+    "system_fingerprint": "fp_08f168e49b_prod0820_fp8_kvcache"
+}
