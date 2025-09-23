@@ -94,4 +94,14 @@ public class PromptController {
         return ResponseEntity.notFound().build();
     }
 
+    /*********************************************************************************************************************************************************
+     * heallthCheck:
+     *  Return an Ok 200 response when the api is running. This is a status check method
+     *  Usage: http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/prompt/status e.g. http://localhost:8080/dap/api/v1.0/prompt/status
+     ********************************************************************************************************************************************************/
+    @GetMapping("status")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("Prompt API Service is running");
+    }
+
 }
