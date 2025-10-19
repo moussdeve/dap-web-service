@@ -16,7 +16,7 @@
 // *                        DeepSeek-Resource-Oriented - Operates on DeepSeek resources
 // *==========================================================================================================================================================================
 // *
-// *	Dependencies:	NONE
+// *	Dependencies:	
 // *	Usage		:	
 // *	Notes		:	
 //*****************************************************************************************************************************************************************************
@@ -26,6 +26,7 @@ package com.moussdeve.dap.deepseek;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,6 +58,7 @@ public class DeepSeekController {
      * @return List<ContentLineEntity> codes - a list of codes 
      ********************************************************************************************************************************************************/
     @GetMapping("promoco")
+    @PreAuthorize("isAuthenticated()")
     public List<ContentLineEntity> getCoupons(@RequestParam String store) {
         
         Mono<DeepSeekResponseModel> responseMono = deepSeekRequestService.chatCompletion(store);
@@ -64,6 +66,7 @@ public class DeepSeekController {
         
         DeepSeekResponseParser parser = new DeepSeekResponseParser(response);
         List<ContentLineEntity> codes = parser.getContent();
+
         return codes;
     }
 
@@ -77,8 +80,9 @@ public class DeepSeekController {
      * @return Mono<ResponseEntity<DeepSeekResponseModel>> 
      ********************************************************************************************************************************************************/
     @PostMapping("/")
+    @PreAuthorize("isAuthenticated()")
     private Mono<ResponseEntity<DeepSeekResponseModel>> searchDeepSeek(@RequestParam String store) {
-        // final String prompt = messageDeepSeek + store;
+        
         return deepSeekRequestService.chatCompletion(store)
                 .map(ResponseEntity::ok)
                 .onErrorResume(e -> Mono.just(ResponseEntity.internalServerError().build()));
@@ -94,6 +98,7 @@ public class DeepSeekController {
      * @return Mono<ResponseEntity<DeepSeekResponseModel>> 
      ********************************************************************************************************************************************************/
     @PostMapping("custom")
+    @PreAuthorize("isAuthenticated()")
     private Mono<ResponseEntity<DeepSeekResponseModel>> getCustomCompletion(@RequestBody DeepSeekRequestModel store) {
         return deepSeekRequestService.chatCompletion(store.getMessages().get(0).getContent())
                 .map(ResponseEntity::ok)
@@ -102,11 +107,12 @@ public class DeepSeekController {
 
 
     /*********************************************************************************************************************************************************
-     * heallthCheck:
+     * healthCheck:
      *  Return an Ok 200 response when the api is running. This is a status check method
      *  Usage: http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/status e.g. http://localhost:8080/dap/api/v1.0/des/status
      ********************************************************************************************************************************************************/
     @GetMapping("status")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> healthCheck() {
         return ResponseEntity.ok("DeepSeek Chat API Service is running");
     }

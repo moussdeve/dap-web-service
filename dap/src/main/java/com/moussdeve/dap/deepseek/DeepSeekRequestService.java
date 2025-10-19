@@ -1,15 +1,17 @@
-//*****************************************************************************************************************************************************************************
+//***************************************************************************************************************
 // *	Title		:	DeepSeekRequestService
 // * 	Author		:	Armand Moussaouyi
 // *	Date		:	Thursday 17th July, 2025
 // *	Version		:	v1.0.0
-// * 	Description	:	Performs client requests to DeepSeek
-// *==========================================================================================================================================================================
+// * 	Description	:	Custom service layer component, handles business logic, and data operations for 
+// *                        Processing API requests between controller and repository layer.
+// *                        Performs client requests to DeepSeek
+// *=============================================================================================================
 // *
-// *	Dependencies:	NONE
+// *	Dependencies:
 // *	Usage		:	
 // *	Notes		:	
-//*****************************************************************************************************************************************************************************
+//***************************************************************************************************************
 
 package com.moussdeve.dap.deepseek;
 
@@ -42,32 +44,57 @@ public class DeepSeekRequestService implements RequestService {
         this.webClient = deepSeekWebClient;
     }
 
+    private ApiConfig getApiConfig() {
+        return apiConfigService.findAll().get(0);
+    }
+
     @Override
     public Mono<DeepSeekResponseModel> chatCompletion(String message) {
         Prompt prompt = apiPromptService.findByTitle(Constants.DEEPSEEK_TITLE).get();
         DeepSeekRequestModel request = createRequest(prompt.getPromptText() + ": " + message);
-        ApiConfig config = apiConfigService.findAll().get(0);
+
+        ApiConfig apiConfig = getApiConfig();
+        String uri = apiConfig.getUri();
+        String token = apiConfig.getToken();
 
         return webClient.post()
-            .uri(/*"https://api.deepseek.com/chat/completions"*/ config.getUri())
+            .uri(uri)
             .header("Content-Type", "application/json")
-            .header("Authorization", "Bearer " + config.getToken())
+            .header("Authorization", "Bearer " + token)
             .bodyValue(request)
             .retrieve()
             .bodyToMono(DeepSeekResponseModel.class);
     }
 
+    /*
+     * Method   : chatCompletion
+     * Input    : DeepSeekRequestModel
+     * Return   : Mono<DeepSeekResponseModel>
+     * Desc     :   Takes the input and performs an API request and returns a response
+     */
     @Override
     public Mono<DeepSeekResponseModel> chatCompletion(DeepSeekRequestModel request) {
-        return webClient.post()
-            .uri("https://api.deepseek.com/chat/completions")
-            .header("Content-Type", "application/json")
-            .header("Authorization", "Bearer " + "sk-9bdd964ff0b24b5a9c688e62962835a9")
-            .bodyValue(request)
-            .retrieve()
-            .bodyToMono(DeepSeekResponseModel.class);
+
+        ApiConfig apiConfig = getApiConfig();
+        String uri = apiConfig.getUri();
+        String token = apiConfig.getToken();
+
+        // Start an HTTP POST request and returns the results of that call
+        return webClient.post()         // creates a POST request builder
+            .uri(uri)                   // sets the target api
+            .header("Content-Type", "application/json")     // adds HTTP headers
+            .header("Authorization", "Bearer " + token)                     // adds authorization-bearer token to the header
+            .bodyValue(request)         // attaches a JSON or object payload to send
+            .retrieve()                 // executes the request and prepares to handle the response
+            .bodyToMono(DeepSeekResponseModel.class);       //  convert original response to DeepSeekResponseModel
     }
 
+    /*
+     * Method   : createRequest
+     * Input    : message
+     * Return   : DeepSeekRequestModel
+     * Desc     :   Construct and returns a request model in the appropriate format
+     */
     @Override
     public DeepSeekRequestModel createRequest(String message) {
         DeepSeekRequestModel.Message userMessage = new DeepSeekRequestModel.Message("user", message);
