@@ -1,7 +1,14 @@
 //*****************************************************************************************************************************************************************************
-// * 
-// * 
-// * 
+// *	Title		:	AuthController
+// * 	Author		:	Armand Moussaouyi
+// *	Date		:	Thursday 17th July, 2025
+// *	Version		:	v1.0.0
+// * 	Description	:	Exposes authentication CRUD operations to HTTP requests. Performs user registration and login
+// *==========================================================================================================================================================================
+// *
+// *	Dependencies:   Spring Security | JWT | 
+// *	Usage		:	
+// *	Notes		:	
 //*****************************************************************************************************************************************************************************
 
 package com.moussdeve.dap.auth;
@@ -22,18 +29,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/dap/api/v1.0/auth/")
 public class AuthController {
+
+    // Core Spring Security interface
+    // Authenticates user credentials and returns an authenticated object
     @Autowired
     private AuthenticationManager authenticationManager;
 
+
+    // Custom implementation of UserDetailsService that loads 
+    //  user data (username, password, ...) from the database.
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+
+    // Utility object for generating, parsing, and 
+    // validating JWT tokens in stateless authentication
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+
+    // User service-layer object manages the user entity
+    // Handles user-related business logic such as registration,
+    // updates, and retrieval between controller and repository layers.
     @Autowired
     private UserService userService;
     
+
+    // Exposes and handles login HTTP request
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
 
@@ -50,6 +72,7 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(token, userDetails.getUsername()));
     }
 
+    // Exposes and handles registration HTTP request
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
 
@@ -77,11 +100,15 @@ public class AuthController {
     /*********************************************************************************************************************************************************
      * healthCheck:
      *  Return an Ok 200 response when the api is running. This is a status check method
-     *  Usage: http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/auth/status e.g. http://localhost:8080/dap/api/v1.0/des/status
+     * 
+     *  Usage: http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/auth/status 
+     *         http://localhost:8080/dap/api/v1.0/des/status
+     * 
+     * @return ResponseEntity - "Authentication API Service is running"
      ********************************************************************************************************************************************************/
     @GetMapping("status")
     public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("DeepSeek Chat API Service is running");
+        return ResponseEntity.ok("Authentication API Service is running");
     }
     
 }

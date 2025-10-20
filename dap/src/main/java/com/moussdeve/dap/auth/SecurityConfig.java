@@ -1,8 +1,23 @@
-//*****************************************************************************************************************************************************************************
-// * 
-// * 
-// * 
-//*****************************************************************************************************************************************************************************
+//*************************************************************************************************************************************
+// *	Title		:	SecurityConfig
+// * 	Author		:	Armand Moussaouyi
+// *	Date		:	Thursday 17th July, 2025
+// *	Version		:	v1.0.0
+// *
+// * 	Description	:	Spring Security configuration class that defines how authentication and authorization work in the application.
+// *                    The class is of Spring bean definitions, enables Spring Security's web security support and allows it to be 
+// *                        considered, and enables method-level security annotations such as @PreAuthorize, @Secured, etc.
+// *                    Within this class, can bee be configure:
+// *                        - Password encoding (e.g., BCryptPasswordEncoder)
+// *                        - AuthenticationManager setup
+// *                        - Security filters (e.g., JWT filter)
+// *                        - HTTP security rules (which endpoints require authentication)
+// *===================================================================================================================================
+// *
+// *	Dependencies:   
+// *	Usage		:	
+// *	Notes		:	
+//*************************************************************************************************************************************
 
 package com.moussdeve.dap.auth;
 

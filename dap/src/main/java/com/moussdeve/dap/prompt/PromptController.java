@@ -16,7 +16,7 @@
 // *                        Prompt-Resource-Oriented - Operates on Prompt resources
 // *==========================================================================================================================================================================
 // *
-// *	Dependencies:	NONE
+// *	Dependencies:
 // *	Usage		:	
 // *	Notes		:	
 //*****************************************************************************************************************************************************************************
@@ -49,29 +49,38 @@ public class PromptController {
     @Autowired
     private ApiPromptService promptService;
 
+    // Finds and returns all prompts
     @GetMapping
     public List<Prompt> getAllPrompts() {
         return promptService.findAll();
     }
 
+
+    // Find and return the prompt matching the id
     @GetMapping("/{id}")
     public ResponseEntity<Prompt> getPrompt(@PathVariable Long id) {
         Optional<Prompt> prompt = promptService.findById(id);
         return prompt.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+
+    // Find and return prompt by title
     @GetMapping("/{title}")
     public ResponseEntity<Prompt> getPrompt(@PathVariable String title) {
         Optional<Prompt> prompt = promptService.findByTitle(title);
         return prompt.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
     
+
+    // Creates a new configuration prompt
     @PostMapping
     public ResponseEntity<Prompt> createConfig(@Valid @RequestBody Prompt prompt) {
         Prompt savedPrompt = promptService.save(prompt);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPrompt);
     }
 
+
+    // Modifies an existing prompt by id
     @PutMapping("/{id}")
     public ResponseEntity<Prompt> updatePrompt(@PathVariable Long id, @RequestBody Prompt updatedPrompt) {
         return promptService.findById(id).map(prompt ->
@@ -83,7 +92,8 @@ public class PromptController {
         .orElse(ResponseEntity.notFound().build());
     }
 
-    // Delete a prompt
+
+    // Delete the prompt with id
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (promptService.exists(id)) {
@@ -94,11 +104,13 @@ public class PromptController {
         return ResponseEntity.notFound().build();
     }
 
-    /*********************************************************************************************************************************************************
+    /**************************************************************************************************************
      * heallthCheck:
-     *  Return an Ok 200 response when the api is running. This is a status check method
-     *  Usage: http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/prompt/status e.g. http://localhost:8080/dap/api/v1.0/prompt/status
-     ********************************************************************************************************************************************************/
+     *  Usage: http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/prompt/status
+     *         http://localhost:8080/dap/api/v1.0/prompt/status
+     * 
+     * @returns an Ok 200 response when the api is running. This is a status check method
+     *************************************************************************************************************/
     @GetMapping("status")
     public ResponseEntity<String> healthCheck() {
         return ResponseEntity.ok("Prompt API Service is running");

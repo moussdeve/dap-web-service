@@ -49,14 +49,14 @@ public class DeepSeekController {
     }
     
 
-    /*********************************************************************************************************************************************************
+    /************************************************************************************************************************
      * GET - Operation:
      *  Takes a store name as request parameter and return a JSON list of coupons and promotional codes
      *  Usage:  http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/promoco?store={STORE_NAME}
-     *          e.g. http://localhost:8080/dap/api/v1.0/des/promoco?store=Walmart
+     *          http://localhost:8080/dap/api/v1.0/des/promoco?store=Walmart
      *  
      * @return List<ContentLineEntity> codes - a list of codes 
-     ********************************************************************************************************************************************************/
+     ************************************************************************************************************************/
     @GetMapping("promoco")
     @PreAuthorize("isAuthenticated()")
     public List<ContentLineEntity> getCoupons(@RequestParam String store) {
@@ -71,14 +71,15 @@ public class DeepSeekController {
     }
 
 
-    /*********************************************************************************************************************************************************
+    /*************************************************************************************************************************
      * POST - Operation:
      *  Takes name as request parameter and returns a DeepSeekResponseModel JSON of coupons and promotional codes
+     * 
      *  Usage:  http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/?store={STORE_NAME}
      *          e.g. http://localhost:8080/dap/api/v1.0/des/?store=Walmart
      *  
      * @return Mono<ResponseEntity<DeepSeekResponseModel>> 
-     ********************************************************************************************************************************************************/
+     *************************************************************************************************************************/
     @PostMapping("/")
     @PreAuthorize("isAuthenticated()")
     private Mono<ResponseEntity<DeepSeekResponseModel>> searchDeepSeek(@RequestParam String store) {
@@ -89,14 +90,16 @@ public class DeepSeekController {
     }
 
 
-    /*********************************************************************************************************************************************************
+    /**************************************************************************************************************************
      * POST - Operation:
-     *  Takes a store DeepSeekRequestModel JSON as request body and returns a DeepSeekResponseModel JSON of coupons and promotional codes
+     *  Takes a store DeepSeekRequestModel JSON as request body and returns a DeepSeekResponseModel JSON 
+     *      of coupons and promotional codes
+     * 
      *  Usage:  http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/custom?store={STORE_NAME}
-     *          e.g. http://localhost:8080/dap/api/v1.0/des/?store=Walmart
+     *          ghttp://localhost:8080/dap/api/v1.0/des/?store=Walmart
      *  
      * @return Mono<ResponseEntity<DeepSeekResponseModel>> 
-     ********************************************************************************************************************************************************/
+     ****************************************************************************************************************************/
     @PostMapping("custom")
     @PreAuthorize("isAuthenticated()")
     private Mono<ResponseEntity<DeepSeekResponseModel>> getCustomCompletion(@RequestBody DeepSeekRequestModel store) {
@@ -106,11 +109,15 @@ public class DeepSeekController {
     }
 
 
-    /*********************************************************************************************************************************************************
+    /******************************************************************************************************************************
      * healthCheck:
      *  Return an Ok 200 response when the api is running. This is a status check method
-     *  Usage: http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/status e.g. http://localhost:8080/dap/api/v1.0/des/status
-     ********************************************************************************************************************************************************/
+     * 
+     *  Usage: http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/status
+     *         http://localhost:8080/dap/api/v1.0/des/status
+     * 
+     * @return ResponseEntity - "DeepSeek Chat API Service is running"
+     *****************************************************************************************************************************/
     @GetMapping("status")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> healthCheck() {

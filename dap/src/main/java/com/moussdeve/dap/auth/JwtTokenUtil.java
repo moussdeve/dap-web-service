@@ -1,8 +1,17 @@
-//*****************************************************************************************************************************************************************************
-// * 
-// * 
-// * 
-//*****************************************************************************************************************************************************************************
+//*************************************************************************************************************************************************
+// *	Title		:	
+// * 	Author		:	Armand Moussaouyi
+// *	Date		:	Thursday 17th July, 2025
+// *	Version		:	v1.0.0
+
+// * 	Description	:	Utitlity class used to generate, validate, and parse JWT tokens (JSON Web Tokens).
+// *                    Created to handle token-based authentication in stateless REST APIs (It's not built into Spring).
+// *===============================================================================================================================================
+// *
+// *	Dependencies:   
+// *	Usage		:	
+// *	Notes		:	
+//*************************************************************************************************************************************************
 
 package com.moussdeve.dap.auth;
 
@@ -40,11 +49,13 @@ public class JwtTokenUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
+    // Generate a token when a user logs in
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userDetails.getUsername());
     }
 
+    // Creates a token
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
             .claims().empty().add(claims).and()
@@ -55,10 +66,12 @@ public class JwtTokenUtil {
             .compact();
     }
 
+    // Extract the username from the token user details
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
+    // Extract the expiration date from the token user details
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
@@ -85,10 +98,12 @@ public class JwtTokenUtil {
         }
     }
 
+    // Check if the token has expired
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
+    // Validate token to ensure they authentic and not expired
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));

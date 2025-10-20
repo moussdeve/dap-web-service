@@ -1,8 +1,19 @@
-//*****************************************************************************************************************************************************************************
-// * 
-// * 
-// * 
-//*****************************************************************************************************************************************************************************
+//********************************************************************************************************************
+// *	Title		:	CustomUserDetailsService
+// * 	Author		:	Armand Moussaouyi
+// *	Date		:	Thursday 17th July, 2025
+// *	Version		:	v1.0.0
+// *
+// * 	Description	:	Custom implementation of Sppring Security's UserDetailService interface
+// *                        Provides a method to load user information from custom data source (MySQL)
+// *                        This service is automatically called by Spring Security when a user attempts to log in
+// *                        It must return a UserDetails object representing the authenticated user.
+// *==================================================================================================================
+// *
+// *	Dependencies:   
+// *	Usage		:	
+// *	Notes		:	
+//********************************************************************************************************************
 
 package com.moussdeve.dap.auth;
 
@@ -23,6 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    // Custom implementation of loadUserByUsername that loads user data (username, password, state) from the database.
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

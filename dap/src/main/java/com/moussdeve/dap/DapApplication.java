@@ -1,15 +1,17 @@
-//*****************************************************************************************************************************************************************************
+//**********************************************************************************************************************************
 // *	Title		:	Discount Finding Application
 // * 	Author		:	Armand Moussaouyi
 // *	Date		:	Thursday 17th July, 2025
 // *	Version		:	v1.0.0
-// * 	Description	:	This program searches for and returns a list of coupons and or promotional codes based on user-provided store names
-// *==========================================================================================================================================================================
 // *
-// *	Dependencies:	MySQL	|	DeepSeek (LLM)	|	
+// * 	Description	:	This program searches for and returns a list of coupons and or 
+// *						promotional codes based on user-provided store names
+// *================================================================================================================================
+// *
+// *	Dependencies:	MySQL	|	DeepSeek (LLM)	|	JWT		|	Spring Boot & Spring Security
 // *	Usage		:	Compile and run the program / Program's entry point
 // *	Notes		:	
-//*****************************************************************************************************************************************************************************
+//**********************************************************************************************************************************
 
 package com.moussdeve.dap;
 
