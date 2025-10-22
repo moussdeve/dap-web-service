@@ -76,7 +76,7 @@ public class DeepSeekController {
      *  Takes name as request parameter and returns a DeepSeekResponseModel JSON of coupons and promotional codes
      * 
      *  Usage:  http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/?store={STORE_NAME}
-     *          e.g. http://localhost:8080/dap/api/v1.0/des/?store=Walmart
+     *          http://localhost:8080/dap/api/v1.0/des/?store=Walmart
      *  
      * @return Mono<ResponseEntity<DeepSeekResponseModel>> 
      *************************************************************************************************************************/
@@ -96,7 +96,7 @@ public class DeepSeekController {
      *      of coupons and promotional codes
      * 
      *  Usage:  http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/custom?store={STORE_NAME}
-     *          ghttp://localhost:8080/dap/api/v1.0/des/?store=Walmart
+     *          http://localhost:8080/dap/api/v1.0/des/?store=Walmart
      *  
      * @return Mono<ResponseEntity<DeepSeekResponseModel>> 
      ****************************************************************************************************************************/

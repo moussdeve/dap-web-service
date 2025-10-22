@@ -30,6 +30,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,12 +54,14 @@ public class ApiConfigController {
 
     // Get all configurations
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public List<ApiConfig> getAllConfig() {
         return apiConfigService.findAll();
     }
 
     // Get configuration by ID
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiConfig> getConfigById(@PathVariable Long id) {
         Optional<ApiConfig> config = apiConfigService.findById(id);
         return config.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
@@ -66,6 +69,7 @@ public class ApiConfigController {
 
     // Create a new configuration
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiConfig> createConfig(@Valid @RequestBody ApiConfig config) {
         ApiConfig savedConfig = apiConfigService.save(config);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedConfig);
@@ -73,6 +77,7 @@ public class ApiConfigController {
     
     // Update an existing configuration
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiConfig> updateConfig(@PathVariable Long id, @RequestBody ApiConfig updatedConfig) {
         return apiConfigService.findById(id).map(config ->
         {
@@ -86,6 +91,7 @@ public class ApiConfigController {
 
     // Delete a configuration
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> deleteConfig(@PathVariable Long id) {
         if (apiConfigService.existsById(id)) {
             apiConfigService.deleteById(id);
@@ -99,7 +105,8 @@ public class ApiConfigController {
     /*********************************************************************************************************************************************************
      * heallthCheck:
      *  Return an Ok 200 response when the api is running. This is a status check method
-     *  Usage: http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/config/status e.g. http://localhost:8080/dap/api/v1.0/config/status
+     *  Usage: http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/config/status
+     *         http://localhost:8080/dap/api/v1.0/config/status
      ********************************************************************************************************************************************************/
     @GetMapping("status")
     public ResponseEntity<String> healthCheck() {

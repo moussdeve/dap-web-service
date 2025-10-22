@@ -70,7 +70,7 @@ public class DeepSeekRequestService implements RequestService {
      * Method   : chatCompletion
      * Input    : DeepSeekRequestModel
      * Return   : Mono<DeepSeekResponseModel>
-     * Desc     :   Takes the input and performs an API request and returns a response
+     * Desc     : Takes the input and performs an API request and returns a response
      */
     @Override
     public Mono<DeepSeekResponseModel> chatCompletion(DeepSeekRequestModel request) {

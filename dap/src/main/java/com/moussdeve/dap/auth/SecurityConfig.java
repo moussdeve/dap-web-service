@@ -61,6 +61,7 @@ public class SecurityConfig {
                 .requestMatchers("/dap/api/v1.0/auth/**").permitAll()
                 .requestMatchers("/dap/api/v1.0/auth/status").permitAll()
                 .requestMatchers("/dap/api/v1.0/des/status").permitAll()
+                .requestMatchers("/dap/api/config/status").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()
