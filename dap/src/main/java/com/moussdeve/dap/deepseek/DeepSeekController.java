@@ -42,8 +42,8 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/dap/api/v1.0/des/")
 public class DeepSeekController {
 
-    private final DeepSeekRequestService deepSeekRequestService;
-
+    private DeepSeekRequestService deepSeekRequestService;
+    
     public DeepSeekController(DeepSeekRequestService deepSeekService) {
         this.deepSeekRequestService = deepSeekService;
     }
@@ -82,7 +82,7 @@ public class DeepSeekController {
      *************************************************************************************************************************/
     @PostMapping("/")
     @PreAuthorize("isAuthenticated()")
-    private Mono<ResponseEntity<DeepSeekResponseModel>> searchDeepSeek(@RequestParam String store) {
+    public Mono<ResponseEntity<DeepSeekResponseModel>> searchDeepSeek(@RequestParam String store) {
         
         return deepSeekRequestService.chatCompletion(store)
                 .map(ResponseEntity::ok)
@@ -102,10 +102,24 @@ public class DeepSeekController {
      ****************************************************************************************************************************/
     @PostMapping("custom")
     @PreAuthorize("isAuthenticated()")
-    private Mono<ResponseEntity<DeepSeekResponseModel>> getCustomCompletion(@RequestBody DeepSeekRequestModel store) {
-        return deepSeekRequestService.chatCompletion(store.getMessages().get(0).getContent())
+    public Mono<ResponseEntity<DeepSeekResponseModel>> getCustomCompletion(@RequestBody DeepSeekRequestModel store) {
+        
+        String storeName;
+
+        if (store == null || this.deepSeekRequestService == null) {
+            return Mono.just(ResponseEntity.badRequest().build());
+        }
+
+        if (!store.getMessages().isEmpty()) {
+            storeName = store.getMessages().get(0).getContent();
+
+            return deepSeekRequestService.chatCompletion(storeName)
                 .map(ResponseEntity::ok)
                 .onErrorResume(e -> Mono.just(ResponseEntity.internalServerError().build()));
+        }
+
+        return Mono.just(ResponseEntity.badRequest().build());
+        
     }
 
 
@@ -119,7 +133,6 @@ public class DeepSeekController {
      * @return ResponseEntity - "DeepSeek Chat API Service is running"
      *****************************************************************************************************************************/
     @GetMapping("status")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> healthCheck() {
         return ResponseEntity.ok("DeepSeek Chat API Service is running");
     }

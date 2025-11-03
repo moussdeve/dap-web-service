@@ -35,6 +35,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +52,7 @@ public class PromptController {
 
     // Finds and returns all prompts
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public List<Prompt> getAllPrompts() {
         return promptService.findAll();
     }
@@ -58,6 +60,7 @@ public class PromptController {
 
     // Find and return the prompt matching the id
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Prompt> getPrompt(@PathVariable Long id) {
         Optional<Prompt> prompt = promptService.findById(id);
         return prompt.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
@@ -66,6 +69,7 @@ public class PromptController {
 
     // Find and return prompt by title
     @GetMapping("/{title}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Prompt> getPrompt(@PathVariable String title) {
         Optional<Prompt> prompt = promptService.findByTitle(title);
         return prompt.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
@@ -74,6 +78,7 @@ public class PromptController {
 
     // Creates a new configuration prompt
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Prompt> createConfig(@Valid @RequestBody Prompt prompt) {
         Prompt savedPrompt = promptService.save(prompt);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPrompt);
@@ -82,6 +87,7 @@ public class PromptController {
 
     // Modifies an existing prompt by id
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Prompt> updatePrompt(@PathVariable Long id, @RequestBody Prompt updatedPrompt) {
         return promptService.findById(id).map(prompt ->
         {
@@ -95,6 +101,7 @@ public class PromptController {
 
     // Delete the prompt with id
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (promptService.exists(id)) {
             promptService.delete(id);

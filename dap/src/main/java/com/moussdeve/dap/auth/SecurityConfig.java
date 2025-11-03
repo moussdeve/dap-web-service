@@ -58,12 +58,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/dap/api/v1.0/auth/**").permitAll()
-                .requestMatchers("/dap/api/v1.0/auth/status").permitAll()
-                .requestMatchers("/dap/api/v1.0/des/status").permitAll()
-                .requestMatchers("/dap/api/config/status").permitAll()
-                .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/error").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/dap/api/v1.0/auth/**").permitAll()
+                .requestMatchers("/dap/api/config/status").permitAll()
+                .requestMatchers("/dap/api/v1.0/des/status").permitAll()  
+                .requestMatchers("/dap/api/v1.0/prompt/status").permitAll()
                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
