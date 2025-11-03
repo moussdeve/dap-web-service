@@ -36,7 +36,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 
 @Configuration
 @EnableWebSecurity
@@ -64,6 +67,9 @@ public class SecurityConfig {
                 .requestMatchers("/dap/api/config/status").permitAll()
                 .requestMatchers("/dap/api/v1.0/des/status").permitAll()  
                 .requestMatchers("/dap/api/v1.0/prompt/status").permitAll()
+                .requestMatchers("/dap/api/v1.0/des/").permitAll()
+                .requestMatchers("/dap/api/v1.0/des/custom").permitAll()
+                .requestMatchers("/dap/api/v1.0/des/promoco").permitAll()
                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
