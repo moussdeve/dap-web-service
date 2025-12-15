@@ -134,6 +134,6 @@ public class DeepSeekController {
      *****************************************************************************************************************************/
     @GetMapping("status")
     public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("DeepSeek Chat API Service is running");
+        return ResponseEntity.ok("DAP - DeepSeek Chat API Service is running");
     }
 }
