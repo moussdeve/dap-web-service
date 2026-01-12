@@ -14,6 +14,7 @@
 package com.moussdeve.dap.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,6 +22,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.servlet.http.Cookie;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,10 +72,23 @@ public class AuthController {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
+
+        // Setting Cookie in ResponseEntity
+        ResponseCookie cookie = ResponseCookie.from("DAP-JWT", token)
+            .httpOnly(true)
+            .secure(false)              // Set to true in production with HTTPS
+            .path("/")
+            .maxAge(24 * 60 * 60)               // 1 day
+            //.domain("localhost")
+            .build();
+
+        return ResponseEntity.ok().header("Set-Cookie", cookie.toString())
+            .body(new AuthResponse(token, userDetails.getUsername()));
         
-        return ResponseEntity.ok(new AuthResponse(token, userDetails.getUsername()));
+        // return ResponseEntity.ok(new AuthResponse(token, userDetails.getUsername()));
     }
 
+    
     // Exposes and handles registration HTTP request
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {

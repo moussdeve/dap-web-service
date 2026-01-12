@@ -40,9 +40,11 @@ public class DeepSeekResponseParser implements ContentEntity{
     public void processContent() {
         // Skip models containing empty responses
         if (this.responseModel == null || this.responseModel.getChoices().isEmpty()) {
+            // System.out.println("###  DeepSeekResponseParser: Empty response model or choices.");
             return;
         }
 
+        // System.out.println("###  DeepSeekResponseParser: Processing response content...");
         List<String> promoParts = new ArrayList<>();                                                      // Stores each promo codes part in the list
         final String content = this.responseModel.getChoices().get(0).getMessage().getContent();    // Get the model response content to parse
         Pattern pattern = Pattern.compile(startRegex);                                                    // Regular expression to match content's table row
@@ -50,6 +52,7 @@ public class DeepSeekResponseParser implements ContentEntity{
 
         int tracker = 1;
         while (matcher.find()) {
+            // System.out.println("###  DeepSeekResponseParser: Found promo code line: " + matcher.group(0));
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 promoParts.add(matcher.group(i));
                 if (tracker % matcher.groupCount() == 0) {

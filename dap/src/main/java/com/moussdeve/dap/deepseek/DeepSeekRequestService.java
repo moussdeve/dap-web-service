@@ -57,6 +57,11 @@ public class DeepSeekRequestService implements RequestService {
         String uri = apiConfig.getUri();
         String token = apiConfig.getToken();
 
+        // System.out.println("#1. Prompt: " + prompt.getPromptText());
+        // System.out.println("#1. Request: " + request);
+        // System.out.println("#1. URI: " + uri);
+        // System.out.println("#1. Token: " + token);
+
         return webClient.post()
             .uri(uri)
             .header("Content-Type", "application/json")
@@ -78,6 +83,10 @@ public class DeepSeekRequestService implements RequestService {
         ApiConfig apiConfig = getApiConfig();
         String uri = apiConfig.getUri();
         String token = apiConfig.getToken();
+
+        // System.out.println("#2. Request: " + request);
+        // System.out.println("#2. URI: " + uri);
+        // System.out.println("#2. Token: " + token);
 
         // Start an HTTP POST request and returns the results of that call
         return webClient.post()         // creates a POST request builder

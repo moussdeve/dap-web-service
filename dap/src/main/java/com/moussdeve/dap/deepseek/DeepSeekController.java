@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moussdeve.dap.globalprocess.ContentLineEntity;
 
+import io.netty.handler.codec.http.cookie.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -59,8 +62,9 @@ public class DeepSeekController {
      ************************************************************************************************************************/
     @GetMapping("promoco")
     @PreAuthorize("isAuthenticated()")
-    public List<ContentLineEntity> getCoupons(@RequestParam String store) {
-        
+    public List<ContentLineEntity> getCoupons(@RequestParam String store) 
+    {
+
         Mono<DeepSeekResponseModel> responseMono = deepSeekRequestService.chatCompletion(store);
         DeepSeekResponseModel response = responseMono.block();
         
@@ -76,7 +80,7 @@ public class DeepSeekController {
      *  Takes name as request parameter and returns a DeepSeekResponseModel JSON of coupons and promotional codes
      * 
      *  Usage:  http://{IP_ADDRESS/DNS}:{PORT_NUMBER}/dap/api/v1.0/des/?store={STORE_NAME}
-     *          http://localhost:8080/dap/api/v1.0/des/?store=Walmart
+     *          http://localhost:8080/dap/api/v1.0/des/?store=mystore
      *  
      * @return Mono<ResponseEntity<DeepSeekResponseModel>> 
      *************************************************************************************************************************/
@@ -85,8 +89,8 @@ public class DeepSeekController {
     public Mono<ResponseEntity<DeepSeekResponseModel>> searchDeepSeek(@RequestParam String store) {
         
         return deepSeekRequestService.chatCompletion(store)
-                .map(ResponseEntity::ok)
-                .onErrorResume(e -> Mono.just(ResponseEntity.internalServerError().build()));
+            .map(ResponseEntity::ok)
+            .onErrorResume(e -> Mono.just(ResponseEntity.internalServerError().build()));
     }
 
 
