@@ -37,6 +37,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @Configuration
@@ -57,18 +64,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/error").permitAll()
-                .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/dap/api/v1.0/auth/**").permitAll()
-                .requestMatchers("/dap/api/config/status").permitAll()
-                .requestMatchers("/dap/api/v1.0/des/status").permitAll()  
-                .requestMatchers("/dap/api/v1.0/prompt/status").permitAll()
-                .requestMatchers("/dap/api/v1.0/des/").permitAll()
-                .requestMatchers("/dap/api/v1.0/des/custom").permitAll()
-                .requestMatchers("/dap/api/v1.0/des/promoco").permitAll()
-                .anyRequest().authenticated()
+        return http
+                .cors(withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                                .requestMatchers("/error").permitAll()
+                                .requestMatchers("/h2-console/**").permitAll()
+                                .requestMatchers("/dap/api/v1.0/auth/**").permitAll()
+                                .requestMatchers("/dap/api/config/status").permitAll()
+                                .requestMatchers("/dap/api/v1.0/des/status").permitAll()
+                                .requestMatchers("/dap/api/v1.0/prompt/status").permitAll()
+                                .requestMatchers("/dap/api/v1.0/des/").permitAll()
+                                .requestMatchers("/dap/api/v1.0/des/custom").permitAll()
+                                .requestMatchers("/dap/api/v1.0/des/promoco").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
@@ -92,4 +101,30 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:4200");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }   
 }
