@@ -61,7 +61,7 @@ public class DeepSeekController {
      * @return List<ContentLineEntity> codes - a list of codes 
      ************************************************************************************************************************/
     @GetMapping("promoco")
-    @PreAuthorize("isAuthenticated()")
+    // @PreAuthorize("isAuthenticated()")
     public List<ContentLineEntity> getCoupons(@RequestParam String store) 
     {
 
