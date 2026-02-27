@@ -120,7 +120,7 @@ public class PromptController {
      *************************************************************************************************************/
     @GetMapping("status")
     public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("Prompt API Service is running");
+        return ResponseEntity.ok("DAP - DES Prompt API is running.");
     }
 
 }

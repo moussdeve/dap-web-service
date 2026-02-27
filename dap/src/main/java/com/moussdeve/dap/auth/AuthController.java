@@ -23,8 +23,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.Cookie;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -125,7 +123,7 @@ public class AuthController {
      ********************************************************************************************************************************************************/
     @GetMapping("status")
     public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("Authentication API Service is running");
+        return ResponseEntity.ok("DAP - DES Authentication API is running...");
     }
     
 }
